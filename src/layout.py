@@ -3,7 +3,7 @@ from PIL import Image
 import numpy as np
 import streamlit as st
 import matplotlib.pyplot as plt
-from utils import shadow_highlight_correction
+from utils import shadow_highlight_correction, get_rgb_image_histogram
 
 img_path = 'C:/Users/HP/Desktop/data_cleanup_DR/all_crop_images_v1_perfect_consensus_annotation_tool/4/dj_711.jpeg'
 image = np.array(Image.open(img_path))
@@ -36,9 +36,14 @@ def display_image(image, shadow_amount, shadow_tone, highlight_amount, highlight
         with col1:
             st.write('Original Image')
             st.image(image, clamp=True, use_column_width=True)
+            # histogram here
+            get_rgb_image_histogram(image)
+
         with col2:
             st.write('Modified Image')
             st.image(modified_image, clamp=True, use_column_width=True)
+            # histogram here
+            get_rgb_image_histogram(modified_image)
 
 
 def show():

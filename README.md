@@ -1,4 +1,4 @@
-# A Shadow & Highlight image annotator and recorder for image enhancement analysis
+# A Shadow & Highlight image modifier and recorder for image enhancement analysis
 
 ```
 cd src

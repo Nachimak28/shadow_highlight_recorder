@@ -4,6 +4,8 @@ import cv2
 import pandas as pd
 from datetime import datetime
 from pytz import timezone
+import streamlit as st
+import matplotlib.pyplot as plt
 
 
 def get_current_time():
@@ -115,3 +117,12 @@ def shadow_highlight_correction(
     output = np.row_stack([output_B, output_G, output_R]).T.reshape(height, width, 3)
     output = np.minimum(output, 255).astype(np.uint8)
     return output
+
+
+def get_rgb_image_histogram(image):
+    fig, ax = plt.subplots()
+    color = ('b','g','r')
+    for channel,col in enumerate(color):
+        histr = cv2.calcHist([image],[channel],None,[256],[0,256])
+        ax.plot(histr,color = col)
+    st.pyplot(fig)
