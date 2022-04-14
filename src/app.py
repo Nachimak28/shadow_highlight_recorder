@@ -1,11 +1,12 @@
 import os
+from PIL import Image
 import streamlit as st
 import numpy as np
 import pandas as pd
 from enums import Status
 from config import compulsory_column_names
 from utils import get_current_time, filter_images_by_status, shadow_highlight_correction
-
+from layout import main_layout
 
 
 st.write('Shadow highlight recorder')
@@ -45,3 +46,57 @@ def show():
 
             st.session_state.final_index = len(df)
             st.session_state.current_index = pending_start_index
+
+        def record_data(record_data_dict):
+            for k, v in record_data_dict.items():
+                st.session_state.df.at[st.session_state.current_index,
+                                   k] = v
+            st.session_state.df.at[st.session_state.current_index,
+                                   'status'] = 'done'
+            # if st.session_state.current_index:
+            if st.session_state.current_index < st.session_state.final_index:
+                st.session_state.current_index += 1
+        
+        if st.session_state.current_index < st.session_state.final_index:
+            image_path = st.session_state.df.loc[st.session_state.current_index, 'image_paths']
+
+            image = np.array(Image.open(image_path))
+
+            st.write(
+                "Annotated:",
+                st.session_state.current_index,
+                "– Total:",
+                st.session_state.final_index,
+            )
+
+            if st.session_state.current_index < st.session_state.final_index:
+                shadow_amount, shadow_tone, highlight_amount, highlight_tone = main_layout(image=image)
+
+                record_dict = {
+                    'shadow_amount_percent': shadow_amount, 
+                    'shadow_tone_percent': shadow_tone, 
+                    'shadow_radius': 100,
+                    'highlight_amount_percent': highlight_amount, 
+                    'highlight_tone_percent': highlight_tone,
+                    'highlight_radius': 100, 
+                    'color_percent': 1
+                }
+
+                st.button('Next', on_click=record_data,
+                                args=(record_dict,))
+
+            else:
+                st.success(
+                    f"🎈 Done! All {st.session_state.final_index} images fixed."
+                )
+                st.session_state.df.to_csv(csv_file_path)
+
+        st.button('Save intermediate data',
+                  on_click=st.session_state.df.to_csv(csv_file_path))
+    else:
+        st.write('Not rendering, column issue')
+
+
+if __name__ == "__main__":
+    show()
+            

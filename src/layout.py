@@ -5,8 +5,7 @@ import streamlit as st
 import matplotlib.pyplot as plt
 from utils import shadow_highlight_correction, get_rgb_image_histogram
 
-img_path = 'C:/Users/HP/Desktop/data_cleanup_DR/all_crop_images_v1_perfect_consensus_annotation_tool/4/dj_711.jpeg'
-image = np.array(Image.open(img_path))
+
 
 
 def control_ui():
@@ -15,8 +14,8 @@ def control_ui():
     shadow_amount = st.sidebar.slider("Shadow amount", 0.0, 1.0, 0.5, step=0.05)
     shadow_tone = st.sidebar.slider("Shadow Tone", 0.0, 1.0, 0.0, step=0.05)
 
-    highlight_amount = st.sidebar.slider("Highlight amount", 0.0, 1.0, 0.5, step=0.05)
-    highlight_tone = st.sidebar.slider("Highlight Tone", 0.0, 1.0, 0.0, step=0.05)
+    highlight_amount = st.sidebar.slider("Highlight amount", 0.0, 1.0, 0.05, step=0.05)
+    highlight_tone = st.sidebar.slider("Highlight Tone", 0.0, 1.0, 0.05, step=0.05)
 
     return shadow_amount, shadow_tone, highlight_amount, highlight_tone
 
@@ -46,12 +45,17 @@ def display_image(image, shadow_amount, shadow_tone, highlight_amount, highlight
             get_rgb_image_histogram(modified_image)
 
 
-def show():
+def main_layout(image):
 
     shadow_amount, shadow_tone, highlight_amount, highlight_tone = control_ui()
 
     display_image(image=image, shadow_amount=shadow_amount, shadow_tone=shadow_tone, highlight_amount=highlight_amount, highlight_tone=highlight_tone)
 
+    return shadow_amount, shadow_tone, highlight_amount, highlight_tone
+
     
 if __name__ == "__main__":
-    show()
+
+    img_path = 'C:/Users/HP/Desktop/data_cleanup_DR/all_crop_images_v1_perfect_consensus_annotation_tool/4/dj_711.jpeg'
+    image = np.array(Image.open(img_path)) 
+    main_layout(image=image)
