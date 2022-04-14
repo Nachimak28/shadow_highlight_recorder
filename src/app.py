@@ -9,12 +9,7 @@ from utils import get_current_time, filter_images_by_status, shadow_highlight_co
 from layout import main_layout
 
 
-st.write('Shadow highlight recorder')
-
-df = pd.read_csv('..\data\low_contrast_all_perfect_concensus_images_v2_with_means_medians.csv')
-df['processing_flag'] = np.logical_and(df.low_contrast_flag_upper_pencentile_50, df.low_contrast_flag_upper_pencentile_60_lower_percentile_30)
-
-image_path_list = list(df[df.processing_flag == True].image_paths)
+# st.write('Shadow highlight recorder')
 
 @st.cache
 def read_csv_and_filter(csv_path):
