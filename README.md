@@ -32,5 +32,5 @@ streamlit run app.py
 * Modular enough to easily modify and reuse
 * Save intermediate data to satisfy the OCD of developers to constantly save work
 
-
+## Demo
 ![Demo](assets/app_demo.gif)
